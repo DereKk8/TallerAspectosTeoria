@@ -1,10 +1,10 @@
 package com.ejemplo.notasapp.controlador;
 
 import com.ejemplo.notasapp.modelo.Nota;
+import com.ejemplo.notasapp.modelo.Estudiante;
 import com.ejemplo.notasapp.repositorio.RepositorioNota;
 import com.ejemplo.notasapp.repositorio.RepositorioEstudiante;
 import com.ejemplo.notasapp.servicio.ServicioNota;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +27,7 @@ public class NotaController {
     public String listar(@PathVariable Long estudianteId, Model model) {
         model.addAttribute("notas", notaRepo.findByEstudianteId(estudianteId));
         model.addAttribute("estudianteId", estudianteId);
-        val est = estudianteRepo.findById(estudianteId).orElseThrow(null);
+        Estudiante est = estudianteRepo.findById(estudianteId).orElseThrow();
         model.addAttribute("estudianteNombre", est.getNombre());
         model.addAttribute("estudianteApellido", est.getApellido());
         return "notas";
@@ -71,8 +71,8 @@ public class NotaController {
 
     @PostMapping("/promedio")
     public String calcularPromedio(@RequestParam Long estudianteId,
-                                   @RequestParam String materia,
-                                   Model model) {
+            @RequestParam String materia,
+            Model model) {
         double promedio = servicioNota.calcularPromedioPorMateria(estudianteId, materia);
         model.addAttribute("promedio", promedio);
         model.addAttribute("estudianteId", estudianteId);
