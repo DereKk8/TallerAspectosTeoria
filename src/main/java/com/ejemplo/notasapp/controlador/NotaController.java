@@ -1,6 +1,7 @@
 package com.ejemplo.notasapp.controlador;
 
 import com.ejemplo.notasapp.modelo.Nota;
+import com.ejemplo.notasapp.excepcion.EstudianteNoEncontrado;
 import com.ejemplo.notasapp.modelo.Estudiante;
 import com.ejemplo.notasapp.repositorio.RepositorioNota;
 import com.ejemplo.notasapp.repositorio.RepositorioEstudiante;
@@ -27,7 +28,8 @@ public class NotaController {
     public String listar(@PathVariable Long estudianteId, Model model) {
         model.addAttribute("notas", notaRepo.findByEstudianteId(estudianteId));
         model.addAttribute("estudianteId", estudianteId);
-        Estudiante est = estudianteRepo.findById(estudianteId).orElseThrow();
+        Estudiante est = estudianteRepo.findById(estudianteId).orElseThrow(
+                () -> new EstudianteNoEncontrado("Estudiante no encontrado", "404", new RuntimeException()));
         model.addAttribute("estudianteNombre", est.getNombre());
         model.addAttribute("estudianteApellido", est.getApellido());
         return "notas";
@@ -36,7 +38,8 @@ public class NotaController {
     @GetMapping("/{estudianteId}/nueva")
     public String nueva(@PathVariable Long estudianteId, Model model) {
         Nota nota = new Nota();
-        nota.setEstudiante(estudianteRepo.findById(estudianteId).orElseThrow());
+        nota.setEstudiante(estudianteRepo.findById(estudianteId).orElseThrow(
+                () -> new EstudianteNoEncontrado("Estudiante no encontrado", "404", new RuntimeException())));
         model.addAttribute("nota", nota);
         return "editar-nota";
     }
