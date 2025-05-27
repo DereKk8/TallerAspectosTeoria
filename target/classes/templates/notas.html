@@ -1,0 +1,24 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<h1 xmlns:th="http://www.w3.org/1999/xhtml">Calificaciones</h1>
+
+<div>Notas del Estudiante [[${estudianteNombre}]] [[${estudianteApellido}]]</div>
+<a th:href="@{/notas/{id}/nueva(id=${estudianteId})}">Nueva Nota</a> <br>
+<!-- Mostrar el nombre del estudiante -->
+<label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+<label style="display: inline-block; width: 150px"> Materia </label>
+<label style="display: inline-block; width: 150px"> Observación </label>
+<label style="display: inline-block; width: 50px"> Nota</label>
+<label style="display: inline-block; width: 70px"> Porcentaje</label>
+<ul>
+  <li th:each="nota : ${notas}">
+    <label style="display: inline-block; width: 150px"> [[${nota.materia}]] </label>
+    <label style="display: inline-block; width: 150px"> [[${nota.observacion}]] </label>
+    <label style="display: inline-block; width: 50px"> [[${nota.valor}]] </label>
+    <label style="display: inline-block; width: 70px"> [[${nota.porcentaje}]] </label>
+    <a th:href="@{/notas/editar/{id}(id=${nota.id})}">Editar</a>
+    <a th:href="@{/notas/eliminar/{id}(id=${nota.id})}">Eliminar</a>
+  </li>
+</ul>
+<a th:href="@{/notas/{id}/promedio(id=${estudianteId})}">Calcular nota final</a><br>
+<a th:href="@{/estudiantes}">Volver a Estudiantes</a>

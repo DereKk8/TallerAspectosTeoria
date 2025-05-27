@@ -1,0 +1,20 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<h1>Editar Estudiante</h1>
+<form th:action="@{/estudiantes/guardar}" method="post" th:object="${estudiante}">
+    <input type="hidden" th:field="*{id}" />
+    <div>
+        <label>Nombre</label><br>
+        <input type="text" th:field="*{nombre}" />
+    </div>
+    <div>
+    <!-- Nombre: <input type="text" th:field="*{nombre}" /> -->
+    <label>Apellido</label> <br>
+        <input type="text" th:field="*{apellido}" />
+    </div>
+        <div>
+    <label>Correo</label> <br>
+            <input type="text" th:field="*{correo}" />
+        </div>
+    <button type="submit">Guardar</button>
+</form>
