@@ -3,11 +3,16 @@ package com.ejemplo.notasapp.aspecto;
 import java.util.Arrays;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import com.ejemplo.notasapp.excepcion.EstudianteNoEncontrado;
 
 @Aspect
 @Component
@@ -31,5 +36,49 @@ public class Aspectos {
         System.out.println("Después de ejecutar: " + joinPoint.getSignature().getName());
         System.out.println("Resultado: " + resultado);
         System.out.println("--------------------------------");
+    }
+
+    @AfterThrowing(pointcut = "puntoDeCorte()", throwing = "ex")
+    public void despuesDeExcepcion(JoinPoint joinPoint, EstudianteNoEncontrado ex) {
+        System.out.println("================================");
+        System.out.println("Excepción capturada en: " + joinPoint.getSignature().getName());
+        System.out.println("Mensaje: " + ex.getMessage());
+        System.out.println("Código: " + ex.getCodigoError());
+        System.out.println("Causa: " + ex.getCause());
+        System.out.println("Redirigiendo al ErrorController...");
+        System.out.println("================================");
+    }
+
+    @After("puntoDeCorte()")
+    public void despuesDeEjecutar(JoinPoint joinPoint) {
+        System.out.println("--------------------------------");
+        System.out.println("Después de ejecutar: " + joinPoint.getSignature().getName());
+        System.out.println("--------------------------------");
+    }
+
+    @Around("execution(* com.ejemplo.notasapp.controlador.NotaController.editar(..))")
+    public Object logAlrededorEditarNota(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("-------Iniciando Editar Nota-------");
+        Long idNota = (Long) joinPoint.getArgs()[0];
+        Long idNuevaNota = (Long) joinPoint.getArgs()[1];
+
+        System.out.println("ID de la nota a editar: " + idNota);
+        System.out.println("Nueva nota: " + idNuevaNota);
+
+        Long inicio = System.currentTimeMillis();
+
+        Object resultado;
+        try {
+            resultado = joinPoint.proceed();
+            System.out.println("Nota editada correctamente");
+        } catch (Exception e) {
+            System.out.println("Error al editar la nota: " + e.getMessage());
+            throw e;
+        } finally {
+            System.out.println("-------Finalizando Editar Nota-------");
+            Long fin = System.currentTimeMillis();
+            System.out.println("Tiempo de ejecución: " + (fin - inicio) + "ms");
+        }
+        return resultado;
     }
 }
