@@ -1,0 +1,3 @@
+2025-05-28 10:56:18 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "LOG_VIOLACION" not found; SQL statement:
+SELECT * FROM log_violacion-seguridad [42102-214]

@@ -1,0 +1,28 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error de Permisos</title>
+</head>
+<body>
+    <h1>Acceso Denegado</h1>
+    <p>No tienes permisos para realizar esta operación.</p>
+    
+    <h3>Detalles del Error:</h3>
+    <ul>
+        <li th:if="${tipoViolacion}"><strong>Tipo:</strong> <span th:text="${tipoViolacion}"></span></li>
+        <li th:if="${usuario}"><strong>Usuario:</strong> <span th:text="${usuario}"></span></li>
+        <li th:if="${operacion}"><strong>Operación:</strong> <span th:text="${operacion}"></span></li>
+        <li th:if="${detalles}"><strong>Detalles:</strong> <span th:text="${detalles}"></span></li>
+        <li th:if="${codigoError}"><strong>Código:</strong> <span th:text="${codigoError}"></span></li>
+    </ul>
+    
+    <p><strong>Aviso:</strong> Esta acción ha sido registrada por seguridad.</p>
+    
+    <p>
+        <a href="javascript:history.back()">← Volver</a> | 
+        <a href="/estudiantes">Ir al Inicio</a> | 
+        <a href="/logout">Cerrar Sesión</a>
+    </p>
+</body>
+</html> 

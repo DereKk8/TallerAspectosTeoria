@@ -1,7 +1,9 @@
 package com.ejemplo.notasapp.controlador;
 
+import com.ejemplo.notasapp.excepcion.EstudianteNoEncontrado;
 import com.ejemplo.notasapp.modelo.UsuarioSesion;
 import com.ejemplo.notasapp.repositorio.RepositorioLogViolacionSeguridad;
+import com.ejemplo.notasapp.repositorio.RepositorioEstudiante;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,9 @@ public class LoginController {
     @Autowired
     private RepositorioLogViolacionSeguridad repositorioLog;
 
+    @Autowired
+    private RepositorioEstudiante repositorioEstudiante;
+
     @GetMapping("/")
     public String index() {
         return "identificacion";
@@ -27,10 +32,11 @@ public class LoginController {
     public String procesarIdentificacion(
             @RequestParam("nombre") String nombre,
             @RequestParam("rol") String rol,
+            @RequestParam(value = "estudianteId", required = false) Long estudianteId,
             HttpSession session) {
 
         try {
-            // Validar entrada
+            // Validar entrada básica
             if (nombre == null || nombre.trim().isEmpty()) {
                 return "redirect:/?error=nombre_requerido";
             }
@@ -39,9 +45,20 @@ public class LoginController {
                 return "redirect:/?error=rol_invalido";
             }
 
-            // Para alumnos, asignar ID 1 por defecto (en un sistema real esto vendría de
-            // BD)
-            Long estudianteId = "ALUMNO".equals(rol) ? 1L : null;
+            // Validar que los alumnos proporcionen su ID de estudiante
+            if ("ALUMNO".equals(rol)) {
+                if (estudianteId == null || estudianteId <= 0) {
+                    return "redirect:/?error=estudiante_id_requerido";
+                }
+
+                // Verificar que el ID de estudiante existe en la base de datos
+                if (!repositorioEstudiante.existsById(estudianteId)) {
+                    throw new EstudianteNoEncontrado("estudiante no encontrado", "404", new RuntimeException());
+                }
+            } else {
+                // Los profesores no necesitan estudianteId
+                estudianteId = null;
+            }
 
             // Crear usuario de sesión y guardarlo en la sesión HTTP
             UsuarioSesion usuario = new UsuarioSesion(nombre.trim(), rol, estudianteId);
