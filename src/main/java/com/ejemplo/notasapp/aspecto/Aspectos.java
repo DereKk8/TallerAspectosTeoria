@@ -40,12 +40,13 @@ public class Aspectos {
 
     @AfterThrowing(pointcut = "puntoDeCorte()", throwing = "ex")
     public void despuesDeExcepcion(JoinPoint joinPoint, EstudianteNoEncontrado ex) {
-        System.out.println("--------------------------------");
-        System.out.println("Después de ejecutar: " + joinPoint.getSignature().getName());
-        System.out.println("Excepción: " + ex.getMessage());
+        System.out.println("================================");
+        System.out.println("Excepción capturada en: " + joinPoint.getSignature().getName());
+        System.out.println("Mensaje: " + ex.getMessage());
         System.out.println("Código: " + ex.getCodigoError());
         System.out.println("Causa: " + ex.getCause());
-        System.out.println("--------------------------------");
+        System.out.println("Redirigiendo al ErrorController...");
+        System.out.println("================================");
     }
 
     @After("puntoDeCorte()")
