@@ -22,4 +22,22 @@ public class ErrorController {
 
         return "error_estudiante_no_encontrado";
     }
+
+    @GetMapping("/violacion-seguridad")
+    public String violacionSeguridad(
+            @RequestParam(value = "tipoViolacion", defaultValue = "ACCESO_DENEGADO") String tipoViolacion,
+            @RequestParam(value = "usuario", defaultValue = "Usuario") String usuario,
+            @RequestParam(value = "operacion", defaultValue = "Operación") String operacion,
+            @RequestParam(value = "detalles", defaultValue = "Acceso denegado por falta de permisos") String detalles,
+            @RequestParam(value = "codigoError", defaultValue = "403") String codigoError,
+            Model model) {
+
+        model.addAttribute("tipoViolacion", tipoViolacion);
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("operacion", operacion);
+        model.addAttribute("detalles", detalles);
+        model.addAttribute("codigoError", codigoError);
+
+        return "error_violacion_seguridad";
+    }
 }
