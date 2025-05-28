@@ -271,6 +271,7 @@ public class AspectosAutorizacion {
      * Aspecto que valida el acceso a notas específicas por ID
      * Intercepta: /notas/editar/{id} y /notas/eliminar/{id}
      */
+
     @Around("execution(* com.ejemplo.notasapp.controlador.NotaController.editar(Long, ..)) || " +
             "execution(* com.ejemplo.notasapp.controlador.NotaController.eliminar(Long))")
     public Object validarAccesoNotaPorIdAlumno(ProceedingJoinPoint joinPoint) throws Throwable {

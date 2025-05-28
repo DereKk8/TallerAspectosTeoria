@@ -59,11 +59,21 @@ public class Aspectos {
     @Around("execution(* com.ejemplo.notasapp.controlador.NotaController.editar(..))")
     public Object logAlrededorEditarNota(ProceedingJoinPoint joinPoint) throws Throwable {
         System.out.println("-------Iniciando Editar Nota-------");
-        Long idNota = (Long) joinPoint.getArgs()[0];
-        Long idNuevaNota = (Long) joinPoint.getArgs()[1];
+
+        Object[] args = joinPoint.getArgs();
+        System.out.println("Número de argumentos: " + args.length);
+
+        // Buscar el ID de la nota (parámetro Long)
+        Long idNota = null;
+        for (Object arg : args) {
+            if (arg instanceof Long) {
+                idNota = (Long) arg;
+                break;
+            }
+        }
 
         System.out.println("ID de la nota a editar: " + idNota);
-        System.out.println("Nueva nota: " + idNuevaNota);
+        System.out.println("Argumentos: " + Arrays.toString(args));
 
         Long inicio = System.currentTimeMillis();
 
