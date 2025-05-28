@@ -1,0 +1,30 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Acceso al Sistema</title>
+</head>
+<body>
+    <h1>Acceso al Sistema</h1>
+    
+    <form action="/identificacion" method="post">
+        <p>
+            <label for="nombre">Nombre:</label><br>
+            <input type="text" id="nombre" name="nombre" required>
+        </p>
+        
+        <p>
+            <label for="rol">Selecciona tu Rol:</label><br>
+            <select id="rol" name="rol" required>
+                <option value="" disabled selected>-- Selecciona una opción --</option>
+                <option value="ALUMNO">Alumno</option>
+                <option value="PROFESOR">Profesor</option>
+            </select>
+        </p>
+        
+        <p>
+            <button type="submit">Ingresar</button>
+        </p>
+    </form>
+</body>
+</html> 
